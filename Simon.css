@@ -4,17 +4,24 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color:black;
+}
+
+#startBtn{
+    cursor: pointer;
+
 }
 
 .container {
     text-align: center;
+    color: white;
 }
 
 .buttons {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    cursor: pointer;
 }
 
 .color-button {
