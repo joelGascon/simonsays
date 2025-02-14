@@ -10,11 +10,14 @@ const scoreboard = document.getElementById('scoreboard');
 
 startBtn.addEventListener('click', startGame);
 restartBtn.addEventListener('click', restartGame);
+var audio = document.querySelector("audio");
+var audio2 = document.getElementById("audio2")
 
 function startGame() {
     const playerName = playerNameInput.value;
     if (playerName) {
         score = 0;
+        audio.play()
         sequence = [];
         playerSequence = [];
         nextRound();
@@ -44,4 +47,70 @@ function showSequence() {
         highlightButton(color);
         index++;
     }, 1000);
+}
+
+function highlightButton(color) {
+    const button = document.getElementById(color);
+    button.classList.add('active');
+    setTimeout(() => {
+        button.classList.remove('active');
+    }, 500);
+}
+
+function enablePlayerInput() {
+    colors.forEach(color => {
+        document.getElementById(color).addEventListener('click', playerClick);
+    });
+}
+
+function playerClick(event) {
+    const color = event.target.id;
+    playerSequence.push(color);
+    highlightButton(color);
+    audio2.play()
+    checkPlayerInput();
+    
+}
+
+
+
+function checkPlayerInput() {
+    const lastIndex = playerSequence.length - 1;
+    if (playerSequence[lastIndex] !== sequence[lastIndex]) {
+        alert('Juego Terminado');
+        saveScore();
+        restartBtn.style.display = 'block';
+        return;
+    }
+    if (playerSequence.length === sequence.length) {
+        score++;
+        scoreDisplay.textContent = score;
+        setTimeout(nextRound, 1000);
+    }
+}
+
+function saveScore() {
+    const playerName = playerNameInput.value;
+    const storedScores = JSON.parse(localStorage.getItem('scores')) || {};
+    storedScores[playerName] = Math.max(storedScores[playerName] || 0, score);
+    localStorage.setItem('scores', JSON.stringify(storedScores));
+    displayScoreboard();
+}
+
+function displayScoreboard() {
+    const storedScores = JSON.parse(localStorage.getItem('scores')) || {};
+    const scoreboardList = Object.entries(storedScores)
+        .map(([name, score]) => `<li>${name}: ${score}</li>`)
+        .join('');
+    scoreboard.innerHTML = `<h2>Tabla de Puntajes</h2><ul>${scoreboardList}</ul>`;
+    scoreboard.style.display = 'block';
+}
+
+function restartGame() {
+    restartBtn.style.display = 'none';
+    scoreDisplay.textContent = '';
+    scoreboard.style.display = 'none';
+    restartBtn.style.display = 'none';
+    startGame();
+
 }
