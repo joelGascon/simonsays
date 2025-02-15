@@ -1,2 +1,0 @@
-# simonsays.github.io
- 
