@@ -107,10 +107,14 @@ function displayScoreboard() {
 }
 
 function restartGame() {
+ // Muestra el puntaje actual antes de reiniciar
+    alert(`Tu puntaje fue: ${score}`);
+ 
     restartBtn.style.display = 'none';
     scoreDisplay.textContent = '';
     scoreboard.style.display = 'none';
     restartBtn.style.display = 'none';
     startGame();
+  
 
 }
